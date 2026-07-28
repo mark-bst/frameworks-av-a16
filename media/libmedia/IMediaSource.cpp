@@ -28,6 +28,7 @@
 #include <media/stagefright/MediaBufferGroup.h>
 #include <media/stagefright/MediaSource.h>
 #include <media/stagefright/MetaData.h>
+#include <binder/BstUtilsManager.h>
 
 namespace android {
 
@@ -195,6 +196,12 @@ public:
 
     // Binder proxy adds readMultiple support.
     virtual bool supportReadMultiple() {
+        // A16DBG:P2:MECH BST disable multi-read for lysk.en (a13; stub fail-open)
+        BstUtilsManager butilmanager;
+        String16 pkgname = butilmanager.getAppNameFromPid(getpid());
+        if (pkgname == String16("com.papegames.lysk.en")) {
+            return false;
+        }
         return true;
     }
 

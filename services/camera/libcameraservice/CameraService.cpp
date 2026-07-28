@@ -77,6 +77,9 @@
 #include <binder/IServiceManager.h>
 #include <binder/IActivityManager.h>
 #include <camera/CameraUtils.h>
+#include <binder/IPCThreadState.h>
+#include <binder/BstFilterAppsManager.h>
+#include <binder/BstUtilsManager.h>
 #include <camera/StringUtils.h>
 
 #include <system/camera.h>
@@ -1497,6 +1500,15 @@ std::pair<int, IPCTransport> CameraService::getDeviceVersion(const std::string& 
         *facing = info.facing;
         if (orientation) {
             *orientation = info.orientation;
+            // A16DBG:P2:MECH BST camera sensor rotation per-app (a13; stub fail-open)
+            int bstPid = android::IPCThreadState::self()->getCallingPid();
+            android::BstUtilsManager bstUtil;
+            android::String16 bstPkg = bstUtil.getAppNameFromPid(bstPid);
+            android::BstFilterAppsManager bstFilter;
+            int32_t bstAngle = bstFilter.getCameraSensorRotation(bstPkg);
+            if (bstAngle > 0) {
+                *orientation = bstAngle % 1000 % 360;
+            }
         }
     }
 

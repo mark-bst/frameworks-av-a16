@@ -52,6 +52,9 @@
 #include <utils/Trace.h>
 #include <ui/PublicFormat.h>
 #include <camera/StringUtils.h>
+#include <binder/IPCThreadState.h>
+#include <binder/BstFilterAppsManager.h>
+#include <binder/BstUtilsManager.h>
 
 #include "api2/HeicCompositeStream.h"
 #include "device3/ZoomRatioMapper.h"
