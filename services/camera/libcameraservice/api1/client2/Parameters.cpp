@@ -2002,9 +2002,8 @@ status_t Parameters::set(const String8& paramString) {
             newParams.get(CameraParameters::KEY_AUTO_EXPOSURE_LOCK));
     } else if (nullptr !=
             newParams.get(CameraParameters::KEY_AUTO_EXPOSURE_LOCK)){
-        ALOGE("%s: Requested auto exposure lock is not supported",
+        ALOGW("%s: Requested auto exposure lock is not supported; ignoring it",
               __FUNCTION__);
-        return BAD_VALUE;
     }
 
     if (autoWhiteBalanceLockAvailable) {
@@ -2012,9 +2011,8 @@ status_t Parameters::set(const String8& paramString) {
                 newParams.get(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK));
     } else if (nullptr !=
            newParams.get(CameraParameters::KEY_AUTO_WHITEBALANCE_LOCK)) {
-        ALOGE("%s: Requested auto whitebalance lock is not supported",
+        ALOGW("%s: Requested auto whitebalance lock is not supported; ignoring it",
               __FUNCTION__);
-        return BAD_VALUE;
     }
 
     // METERING_AREAS
