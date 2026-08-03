@@ -1,0 +1,16 @@
+cc_prebuilt_library_shared{
+    name : "libwvdrmengine",
+    vendor: true,
+    arch : {
+        x86 : {srcs : ["libwvdrmengine.so"]},
+        x86_64 : {srcs : ["libwvdrmengine.so"]},
+    },
+    check_elf_files: false,
+    strip: {
+        none: true,
+    },
+
+    compile_multilib: "32",
+
+    owner: "widevine",
+}
