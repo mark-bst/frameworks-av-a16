@@ -1,0 +1,9 @@
+cc_binary {
+    name: "bstsvcmgrtest",
+    srcs: ["bstsvcmgrtest.cpp"],
+    shared_libs: [
+        "libbinder",
+        "liblog",
+        "libutils",
+    ],
+}
