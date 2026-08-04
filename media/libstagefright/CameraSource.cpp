@@ -554,6 +554,16 @@ status_t CameraSource::initWithCameraAccess(
     if ((err = isCameraColorFormatSupported(params)) != OK) {
         return err;
     }
+    const char* supportedFrameRates =
+            params.get(CameraParameters::KEY_SUPPORTED_PREVIEW_FRAME_RATES);
+    CHECK(supportedFrameRates != nullptr);
+    char buffer[4];
+    snprintf(buffer, sizeof(buffer), "%d", frameRate);
+    if (strstr(supportedFrameRates, buffer) == nullptr) {
+        frameRate = atoi(supportedFrameRates);
+    } else {
+        frameRate = params.getPreviewFrameRate();
+    }
 
     // Set the camera to use the requested video frame size
     // and/or frame rate.
