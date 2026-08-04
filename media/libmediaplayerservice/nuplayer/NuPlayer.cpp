@@ -2118,7 +2118,13 @@ void NuPlayer::updateVideoSize(
             && sarWidth > 0 && sarHeight > 0) {
         ALOGV("Sample aspect ratio %d : %d", sarWidth, sarHeight);
 
-        displayWidth = (displayWidth * sarWidth) / sarHeight;
+        if (sarWidth == displayWidth || sarHeight == displayHeight) {
+            ALOGW("Ignoring sample aspect ratio %d:%d that matches frame dimensions %d x %d",
+                    sarWidth, sarHeight, displayWidth, displayHeight);
+        } else {
+            displayWidth = static_cast<int32_t>(
+                    displayWidth * static_cast<int64_t>(sarWidth) / sarHeight);
+        }
 
         ALOGV("display dimensions %d x %d", displayWidth, displayHeight);
     } else {

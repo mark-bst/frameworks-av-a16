@@ -134,9 +134,8 @@ void SoftwareRenderer::resetFormatIfChanged(
             case OMX_COLOR_FormatYUV420SemiPlanar:
             case OMX_TI_COLOR_FormatYUV420PackedSemiPlanar:
             {
-                halFormat = HAL_PIXEL_FORMAT_YV12;
-                bufWidth = (mCropWidth + 1) & ~1;
-                bufHeight = (mCropHeight + 1) & ~1;
+                // Mesa does not provide the YV12 path used by App Player.
+                // Keep RGB565 so ColorConverter handles these formats.
                 break;
             }
             case OMX_COLOR_Format24bitRGB888:

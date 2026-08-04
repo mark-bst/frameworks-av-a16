@@ -891,17 +891,31 @@ status_t ColorConverter::convertYUV420PlanarUseLibYUV(
     switch (mDstFormat) {
     case OMX_COLOR_Format16bitRGB565:
     {
-        libyuv::I420ToRGB565Matrix(src_y,
-                src_stride_y,
-                src_u,
-                src_stride_u,
-                src_v,
-                src_stride_v,
-                dst_ptr,
-                dst.mStride,
-                yuvConstants.yuv,
-                src.cropWidth(),
-                src.cropHeight());
+        if (yuvConstants.yuv == &libyuv::kYuvI601Constants) {
+            libyuv::I420ToRGB565Dither(src_y,
+                    src_stride_y,
+                    src_u,
+                    src_stride_u,
+                    src_v,
+                    src_stride_v,
+                    dst_ptr,
+                    dst.mStride,
+                    nullptr,
+                    src.cropWidth(),
+                    src.cropHeight());
+        } else {
+            libyuv::I420ToRGB565Matrix(src_y,
+                    src_stride_y,
+                    src_u,
+                    src_stride_u,
+                    src_v,
+                    src_stride_v,
+                    dst_ptr,
+                    dst.mStride,
+                    yuvConstants.yuv,
+                    src.cropWidth(),
+                    src.cropHeight());
+        }
 
         break;
     }
