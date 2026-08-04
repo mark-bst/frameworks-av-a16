@@ -3232,6 +3232,17 @@ status_t CameraProviderManager::ProviderInfo::DeviceInfo3::getCameraCharacterist
         }
     }
 
+    int pid = IPCThreadState::self()->getCallingPid();
+    BstUtilsManager bstUtils;
+    String16 packageName = bstUtils.getAppNameFromPid(pid);
+    BstFilterAppsManager bstFilter;
+    int32_t bstAngle = bstFilter.getCameraSensorRotation(packageName);
+    if (bstAngle > 0) {
+        int32_t sensorOrientation = bstAngle % 1000 % 360;
+        characteristics->update(
+                ANDROID_SENSOR_ORIENTATION, &sensorOrientation, 1);
+    }
+
     return OK;
 }
 

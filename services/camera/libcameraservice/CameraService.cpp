@@ -77,7 +77,6 @@
 #include <binder/IServiceManager.h>
 #include <binder/IActivityManager.h>
 #include <camera/CameraUtils.h>
-#include <binder/IPCThreadState.h>
 #include <binder/BstFilterAppsManager.h>
 #include <binder/BstUtilsManager.h>
 #include <camera/StringUtils.h>
@@ -1282,6 +1281,17 @@ Status CameraService::getCameraInfo(int cameraId, const CameraCompatibilityInfo&
                 "CameraId is not valid");
     }
 
+    int bstPid = android::IPCThreadState::self()->getCallingPid();
+    android::BstUtilsManager bstUtil;
+    android::String16 bstPkg = bstUtil.getAppNameFromPid(bstPid);
+    android::BstFilterAppsManager bstFilter;
+    int32_t bstAngle = bstFilter.getCameraSensorRotation(bstPkg);
+    char angleValue[PROPERTY_VALUE_MAX] = {};
+    snprintf(angleValue, sizeof(angleValue), "%d", bstAngle);
+    android::String8 bstPkg8(bstPkg);
+    property_set("bst.config.camera_sensor_rotation", angleValue);
+    property_set("bst.config.camera_pkgname_name", bstPkg8.c_str());
+
     Status ret = Status::ok();
     int portraitRotation;
     status_t err = mCameraProviderManager->getCameraInfo(
@@ -1292,6 +1302,8 @@ Status CameraService::getCameraInfo(int cameraId, const CameraCompatibilityInfo&
                 strerror(-err), err);
         logServiceError(std::string("Error retrieving camera info from device ")
                 + std::to_string(cameraId), ERROR_INVALID_OPERATION);
+    } else if (bstAngle > 0) {
+        cameraInfo->orientation = bstAngle % 1000 % 360;
     }
 
     return ret;
@@ -1506,6 +1518,11 @@ std::pair<int, IPCTransport> CameraService::getDeviceVersion(const std::string& 
             android::String16 bstPkg = bstUtil.getAppNameFromPid(bstPid);
             android::BstFilterAppsManager bstFilter;
             int32_t bstAngle = bstFilter.getCameraSensorRotation(bstPkg);
+            char angleValue[PROPERTY_VALUE_MAX] = {};
+            snprintf(angleValue, sizeof(angleValue), "%d", bstAngle);
+            android::String8 bstPkg8(bstPkg);
+            property_set("bst.config.camera_sensor_rotation", angleValue);
+            property_set("bst.config.camera_pkgname_name", bstPkg8.c_str());
             if (bstAngle > 0) {
                 *orientation = bstAngle % 1000 % 360;
             }

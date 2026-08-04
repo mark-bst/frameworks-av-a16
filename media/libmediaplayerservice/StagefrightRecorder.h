@@ -180,6 +180,7 @@ private:
     sp<MediaCodecSource> mVideoEncoderSource;
 
     bool mStarted;
+    bool mUserSetupFrameRate;
     // Needed when GLFrames are encoded.
     // An <MediaSurfaceType> pointer, currently changing from an IGBP to a Surface
     // will be sent to the client side using which the
