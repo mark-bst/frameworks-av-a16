@@ -6,4 +6,5 @@ cc_binary {
         "liblog",
         "libutils",
     ],
+    required: ["logwrapper"],
 }
