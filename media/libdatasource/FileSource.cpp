@@ -21,6 +21,7 @@
 #include <datasource/FileSource.h>
 #include <media/stagefright/foundation/ADebug.h>
 #include <media/stagefright/FoundationUtils.h>
+#include <limits.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -31,6 +32,7 @@ namespace android {
 
 FileSource::FileSource(const char *filename)
     : mFd(-1),
+      mUri(filename != nullptr ? filename : ""),
       mOffset(0),
       mLength(-1),
       mName("<null>") {
@@ -87,6 +89,7 @@ FileSource::FileSource(int fd, int64_t offset, int64_t length)
             (long long) mOffset,
             (long long) mLength);
 
+    fetchUriFromFd(fd);
 }
 
 FileSource::~FileSource() {
@@ -141,6 +144,19 @@ status_t FileSource::getSize(off64_t *size) {
     *size = mLength;
 
     return OK;
+}
+
+void FileSource::fetchUriFromFd(int fd) {
+    char path[PATH_MAX] = {};
+    char link[PATH_MAX] = {};
+
+    mUri.clear();
+    snprintf(path, sizeof(path), "/proc/%d/fd/%d", getpid(), fd);
+    ssize_t len = readlink(path, link, sizeof(link) - 1);
+    if (len >= 0) {
+        link[len] = '\0';
+        mUri.setTo(link);
+    }
 }
 
 }  // namespace android

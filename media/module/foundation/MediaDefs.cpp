@@ -36,6 +36,8 @@ const char *MEDIA_MIMETYPE_VIDEO_DOLBY_VISION = "video/dolby-vision";
 const char *MEDIA_MIMETYPE_VIDEO_SCRAMBLED = "video/scrambled";
 const char *MEDIA_MIMETYPE_VIDEO_DIVX = "video/divx";
 const char *MEDIA_MIMETYPE_VIDEO_DIVX3 = "video/divx3";
+const char *MEDIA_MIMETYPE_VIDEO_DIVX311 = "video/divx311";
+const char *MEDIA_MIMETYPE_VIDEO_DIVX4 = "video/divx4";
 const char *MEDIA_MIMETYPE_VIDEO_XVID = "video/xvid";
 const char *MEDIA_MIMETYPE_VIDEO_MJPEG = "video/x-motion-jpeg";
 

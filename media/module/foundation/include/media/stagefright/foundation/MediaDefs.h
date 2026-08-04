@@ -18,6 +18,8 @@
 
 #define MEDIA_DEFS_H_
 
+#include <stdint.h>
+
 namespace android {
 
 extern const char *MEDIA_MIMETYPE_IMAGE_JPEG;
@@ -38,6 +40,8 @@ extern const char *MEDIA_MIMETYPE_VIDEO_DOLBY_VISION;
 extern const char *MEDIA_MIMETYPE_VIDEO_SCRAMBLED;
 extern const char *MEDIA_MIMETYPE_VIDEO_DIVX;
 extern const char *MEDIA_MIMETYPE_VIDEO_DIVX3;
+extern const char *MEDIA_MIMETYPE_VIDEO_DIVX311;
+extern const char *MEDIA_MIMETYPE_VIDEO_DIVX4;
 extern const char *MEDIA_MIMETYPE_VIDEO_XVID;
 extern const char *MEDIA_MIMETYPE_VIDEO_MJPEG;
 
@@ -177,6 +181,40 @@ enum AudioEncoding {
     kAudioEncodingPcm24bitPacked = 21,
     kAudioEncodingPcm32bit = 22,
 };
+
+static inline AudioEncoding bitsToAudioEncoding(int32_t bits) {
+    switch (bits) {
+        case 8:
+            return kAudioEncodingPcm8bit;
+        case 16:
+            return kAudioEncodingPcm16bit;
+        case 32:
+            return kAudioEncodingPcmFloat;
+        case 64:
+            return kAudioEncodingPcm24bitPacked;
+        case 128:
+            return kAudioEncodingPcm32bit;
+    }
+    return kAudioEncodingInvalid;
+}
+
+static inline int32_t audioEncodingToBits(AudioEncoding encoding) {
+    switch (encoding) {
+        case kAudioEncodingInvalid:
+            return 0;
+        case kAudioEncodingPcm8bit:
+            return 8;
+        case kAudioEncodingPcm16bit:
+            return 16;
+        case kAudioEncodingPcmFloat:
+            return 32;
+        case kAudioEncodingPcm24bitPacked:
+            return 64;
+        case kAudioEncodingPcm32bit:
+            return 128;
+    }
+    return 0;
+}
 
 }  // namespace android
 

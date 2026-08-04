@@ -55,6 +55,11 @@ enum {
     kKeyMaxBitRate        = 'mxBr',  // int32_t (bps)
     kKeyBitsPerSample     = 'bits',  // int32_t (bits per sample)
     kKeyStreamHeader      = 'stHd',  // raw data
+    kKeyCodecId           = 'cdid',  // int32_t
+    kKeyCodedSampleBits   = 'cosb',  // int32_t
+    kKeySampleFormat      = 'sfmt',  // int32_t
+    kKeyBitsPerRawSample  = 'sbit',  // int32_t
+    kKeyFileFormat        = 'ffmt',  // cstring
     kKeyESDS              = 'esds',  // raw data
     kKeyAACProfile        = 'aacp',  // int32_t
     kKeyAVCC              = 'avcc',  // raw data
@@ -147,6 +152,22 @@ enum {
     kKeyValidSamples      = 'valD',  // int32_t
 
     kKeyIsUnreadable      = 'unre',  // bool (int32_t)
+
+    kKeyRawCodecSpecificData = 'rcsd',  // raw data
+    kKeyDivXVersion       = 'DivX',  // int32_t
+    kKeyDivXDrm           = 'QDrm',  // void *
+    kKeyWMAEncodeOpt      = 'eopt',  // int32_t
+    kKeyWMABlockAlign     = 'blka',  // int32_t
+    kKeyWMAVersion        = 'wmav',  // int32_t
+    kKeyWMAAdvEncOpt1     = 'ade1',  // int16_t
+    kKeyWMAAdvEncOpt2     = 'ade2',  // int32_t
+    kKeyWMAFormatTag      = 'fmtt',  // int64_t
+    kKeyWMABitspersample  = 'bsps',  // int64_t
+    kKeyWMAVirPktSize     = 'vpks',  // int64_t
+    kKeyWMVProfile        = 'wmvp',  // int32_t
+    kKeyWMVVersion        = 'wmvv',  // int32_t
+    kKeyRVVersion         = '#rvv',  // int32_t
+    kKeyBlockAlign        = 'ablk',  // int32_t
 
     // An indication that a video buffer has been rendered.
     kKeyRendered          = 'rend',  // bool (int32_t)
@@ -257,6 +278,8 @@ enum {
     kKeyOpaqueCSD2       = 'csd2',
 
     kKeyHapticChannelCount = 'hapC',
+
+    kKeyArbitraryMode     = 'ArbM',
 
     /* MediaRecorder.h, error notifications can represent track ids with 4 bits only.
      * | track id | reserved |     error or info type     |

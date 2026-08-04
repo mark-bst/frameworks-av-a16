@@ -55,6 +55,7 @@ OMXStore::OMXStore() {
 
     addVendorPlugin();
     addPlatformPlugin();
+    addUserPlugin();
 }
 
 OMXStore::~OMXStore() {
@@ -67,6 +68,12 @@ void OMXStore::addVendorPlugin() {
 
 void OMXStore::addPlatformPlugin() {
     addPlugin("libstagefright_softomx_plugin.so");
+}
+
+void OMXStore::addUserPlugin() {
+    std::string plugin = android::base::GetProperty("media.sf.omx-plugin", "");
+    ALOGD("user omx plugin: %s\n", plugin.c_str());
+    addPlugin(plugin.c_str());
 }
 
 void OMXStore::addPlugin(const char *libname) {
@@ -124,10 +131,13 @@ static bool isTV() {
     return kIsTv;
 }
 
+
 void OMXStore::addPlugin(OMXPluginBase *plugin) {
     Mutex::Autolock autoLock(mLock);
 
     bool typeTV = isTV();
+    //In the environment of BlueStacks App Player, can not overlook the OMX plugin.
+    bool appPlayer = true;
     int firstApiLevel = getFirstApiLevel();
 
     OMX_U32 index = 0;
@@ -145,16 +155,16 @@ void OMXStore::addPlugin(OMXPluginBase *plugin) {
             bool skip = false;
             for (String8 role : roles) {
                 if (role.find("video_decoder") != -1 || role.find("video_encoder") != -1) {
-                    if (firstApiLevel >= __ANDROID_API_T__) {
+                    if (!appPlayer && firstApiLevel >= __ANDROID_API_T__) {
                         skip = true;
                         break;
-                    } else if (!typeTV && firstApiLevel >= __ANDROID_API_S__) {
+                    } else if (!appPlayer && !typeTV && firstApiLevel >= __ANDROID_API_S__) {
                         skip = true;
                         break;
                     }
                 }
                 if (role.find("audio_decoder") != -1 || role.find("audio_encoder") != -1) {
-                    if (firstApiLevel >= __ANDROID_API_T__) {
+                    if (!appPlayer && firstApiLevel >= __ANDROID_API_T__) {
                         skip = true;
                         break;
                     }

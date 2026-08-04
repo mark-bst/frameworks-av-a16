@@ -107,6 +107,10 @@ cc_library_static {
         "include",
     ],
 
+    include_dirs: [
+        "external/stagefright-plugins/include",
+    ],
+
     header_libs: [
         "libaudioclient_headers",
         "libbase_headers",
@@ -132,6 +136,14 @@ cc_library_static {
 
     host_supported: true,
     target: {
+        android: {
+            srcs: ["FFMPEGSoftCodec.cpp"],
+            shared_libs: [
+                "android.hidl.allocator@1.0",
+                "android.hidl.memory@1.0",
+                "libstagefright_omx_utils",
+            ],
+        },
         darwin: {
             enabled: false,
         },
@@ -243,6 +255,7 @@ cc_library {
         "CodecErrorLog.cpp",
         "CodecTrace.cpp",
         "CryptoAsync.cpp",
+        "FFMPEGSoftCodec.cpp",
         "FrameDecoder.cpp",
         "HevcUtils.cpp",
         "InterfaceUtils.cpp",
@@ -352,6 +365,10 @@ cc_library {
         "libstagefright_xmlparser_headers",
         "media_ndk_headers",
         "media_quality_headers",
+    ],
+
+    include_dirs: [
+        "external/stagefright-plugins/include",
     ],
 
     export_shared_lib_headers: [
