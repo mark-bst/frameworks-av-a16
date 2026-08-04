@@ -76,7 +76,8 @@ namespace.sphal.visible = true
 # Keep the below in sync with "sphal" namespace in system's /etc/ld.config.txt
 # Codec2 has dependencies on some SP-hals (eg. android.hardware.graphics.mapper@2.0)
 # These are dlopen'ed by libvndksupport.so.
-namespace.sphal.search.paths  = /odm/${LIB}
+namespace.sphal.search.paths  = /apex/com.android.media.swcodec/${LIB}
+namespace.sphal.search.paths += /odm/${LIB}
 namespace.sphal.search.paths += /vendor/${LIB}
 
 namespace.sphal.permitted.paths  = /odm/${LIB}
