@@ -313,6 +313,31 @@ enum {
 };
 
 enum {
+    kTypeDivXVer_3_11,
+    kTypeDivXVer_4,
+    kTypeDivXVer_5,
+    kTypeDivXVer_6,
+};
+
+enum {
+    kTypeWMA,
+    kTypeWMAPro,
+    kTypeWMALossLess,
+};
+
+enum {
+    kTypeWMVVer_7,
+    kTypeWMVVer_8,
+    kTypeWMVVer_9,
+};
+
+enum {
+    kTypeRVVer_G2,
+    kTypeRVVer_8,
+    kTypeRVVer_9,
+};
+
+enum {
     kCryptoModeUnencrypted = 0,
     kCryptoModeAesCtr      = 1,
     kCryptoModeAesCbc      = 2,
